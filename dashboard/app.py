@@ -35,8 +35,12 @@ def load_data():
 
 
 if not os.path.exists(settings.DB_PATH):
-    st.error("No database found. Run `python main.py` first to generate data.")
-    st.stop()
+    import subprocess
+
+    with st.spinner("First-time setup... Generating synthetic AML data..."):
+        subprocess.run([sys.executable, "main.py"])
+
+    st.success("Setup complete!")
 
 customers, transactions, alerts, cases, risk_scores = load_data()
 log_event("DASHBOARD", "Dashboard accessed")
